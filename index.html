@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <title>Кубик</title>
+  <style>
+   body {
+    font-family: "Bookman Old Style" , "Bookman" , "Georgia" , serif;
+    background-color: #d9d9d9;
+   }
+   button {
+    font-family: "Bookman Old Style" , "Bookman" , "Georgia" , serif;
+    font-size: 50px;
+    background-color: #121a3a;
+    color: #d9d9d9;
+    border: none;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 10px;
+   }
+   .white {
+    color: #121a3a;
+   }
+  </style>
+ </head>
+ <body>
+  <h2>Выберите ставку и нажмите "Бросить кубик"</h2><br>
+  <p class="white">Правила: выберите на какое число ставить, если на одном из кубиков выпадет это число вы получите в 6 раз больше очков.<br> Если выпадет дубль - ставка просто вернется, если не повезет то стака сгорит</p><br>
+  <h3>Ваш баланс: <span id="balance"></span></h3><br>
+  <p>Выберите сумму своей ставки: <input type="number" id="betInput" min="1" value="1"></p><br>
+  <p>Выберите на какое число ставить: <input type="number" id="betTarget" min="1" value="1"></p>
+  <button onclick=roll()>Бросить кубики</button>
+  <p id="label1"></p><br>
+  <p id="label2"></p>
+
+  <script>
+  let result = 0;
+ let money = 5;
+ let diceRoll1 = 0;
+ let diceRoll2 = 0;
+ const min = 1;
+ const max = 6;
+
+ function roll() {
+  let betInput = Number(document.getElementById("betInput").value);
+  let betTarget = Number(document.getElementById("betTarget").value);
+  
+  let diceRoll1 = Math.floor(Math.random()*(max-min+1))+min; 
+  let diceRoll2 = Math.floor(Math.random()*(max-min+1))+min; 
+  
+  if (diceRoll1 === betTarget || diceRoll2 === betTarget) {
+   result = betInput * 6;
+  } else if (diceRoll1 === diceRoll2) {
+   result = betInput;
+  } else {
+   result = 0;
+  }
+  if (money < betInput) {
+   alert("Недостаточно средств для ставки!");
+   return;
+  }
+  if (betTarget<1||betTarget>6) {
+   alert("На кубиках не может выпасть такое число!");
+   return;
+  }
+  
+  money = money - betInput + result;
+  document.getElementById("balance").textContent = money;
+  document.getElementById("label1").textContent = "На кубиках выпало " + diceRoll1 + " и " + diceRoll2 + ".";
+  document.getElementById("label2").textContent = "Вы получили " + result;
+  }
+  </script>
+ </body>
+</html>
